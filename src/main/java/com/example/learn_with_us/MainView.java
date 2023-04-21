@@ -63,15 +63,15 @@ public class MainView extends AppLayout {
         return tabs;
     }
 
-    private Component[] createMenuItems() {
+    private Tab[] createMenuItems() {
         return new Tab[] { createTab("Main", MainView.class)};
     }
 
     private static Tab createTab(String text,
-                                 Class<? extends Component> navigationTarget) {
+                                 java.lang.Class<? extends Component> navigationTarget) {
         final Tab tab = new Tab();
         tab.add(new RouterLink(text, navigationTarget));
-        ComponentUtil.setData(tab, Class.class, navigationTarget);
+        ComponentUtil.setData(tab, java.lang.Class.class, navigationTarget);
         return tab;
     }
 
