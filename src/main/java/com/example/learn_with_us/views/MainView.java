@@ -1,4 +1,4 @@
-package com.example.learn_with_us;
+package com.example.learn_with_us.views;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentUtil;
@@ -64,7 +64,7 @@ public class MainView extends AppLayout {
     }
 
     private Tab[] createMenuItems() {
-        return new Tab[] { createTab("Main", MainView.class)};
+        return new Tab[] { createTab("Main", MainView.class) };
     }
 
     private static Tab createTab(String text,

@@ -1,4 +1,4 @@
-package com.example.learn_with_us;
+package com.example.learn_with_us.data.entity;
 
 public class Class {
     private String name;
