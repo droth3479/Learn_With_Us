@@ -1,13 +1,11 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '3.0.5'
+    id 'org.springframework.boot' version '3.0.6'
     id 'io.spring.dependency-management' version '1.1.0'
-    id 'com.vaadin' version '24.0.0'
-    id "org.hibernate.orm" version "6.2.2.Final"
-
+    id 'com.vaadin' version '24.0.5'
 }
 
-group = 'com.example'
+group = 'com.learn_with_us'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'
 
@@ -16,20 +14,18 @@ repositories {
 }
 
 ext {
-    set('vaadinVersion', "24.0.0")
+    set('vaadinVersion', "24.0.5")
 }
 
 dependencies {
-    //Use Jetty instead of default Tomcat
-    implementation('org.springframework.boot:spring-boot-starter-web:3.0.4') {
-        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-tomcat'
-    }
-    implementation 'org.springframework.boot:spring-boot-starter-jetty'
-    implementation 'org.springframework.boot:spring-boot-devtools'
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa:3.0.4'
-    implementation 'com.vaadin:vaadin-spring-boot-starter:24.0.0'
-    implementation 'mysql:mysql-connector-java:5.1.6'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test:3.0.4'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'com.vaadin:vaadin-spring-boot-starter'
+    runtimeOnly 'com.mysql:mysql-connector-j'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    // https://mvnrepository.com/artifact/javax.xml.bind/jaxb-api
+    implementation group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.1'
+
 }
 
 dependencyManagement {

@@ -2,6 +2,7 @@ package com.example.learn_with_us.views;
 
 import com.example.learn_with_us.data.entity.Course;
 import com.example.learn_with_us.data.repository.CourseRepository;
+import com.example.learn_with_us.data.services.CourseService;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -14,12 +15,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Route(value = "courselist")
 public class CourseListView extends VerticalLayout {
 
-    private final CourseRepository repo;
+    private final CourseService service;
     Grid<Course> grid;
     TextField filterText = new TextField();
 
-    public CourseListView(@Autowired CourseRepository repo) {
-        this.repo = repo;
+    public CourseListView(@Autowired CourseService service) {
+        this.service = service;
         this.grid = new Grid<>(Course.class);
         addClassName("course-list-view");
         setSizeFull();
@@ -47,7 +48,7 @@ public class CourseListView extends VerticalLayout {
     }
 
     private void updateList() {
-        grid.setItems(repo.findAll());
+        grid.setItems(service.list());
     }
 
 }
