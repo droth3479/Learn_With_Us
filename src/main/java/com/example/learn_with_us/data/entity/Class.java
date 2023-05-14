@@ -1,15 +1,20 @@
 package com.example.learn_with_us.data.entity;
 
-public class Class {
-    private String name;
-    private int id;
-    private Content content;
+import jakarta.persistence.*;
 
-    public Class(String name, int id, Content content) {
-        this.name = name;
-        this.id = id;
-        this.content = content;
-    }
+@Entity
+public class Class {
+    @Id
+    @GeneratedValue
+    private int id;
+    private String name;
+
+    @ManyToOne
+    @JoinColumn(name = "courseId")
+    private Course course;
+
+    @OneToOne(targetEntity = BaseContent.class)
+    private Content content;
 
     public String getName() {
         return name;
