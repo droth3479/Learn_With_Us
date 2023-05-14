@@ -1,32 +1,19 @@
 package com.example.learn_with_us.data.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import org.springframework.stereotype.Component;
+import jakarta.persistence.*;
 
 @Entity
 public class Course {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String name;
     private String founder;
-    private String subject;
+    @Enumerated(value = EnumType.STRING)
+    @OneToOne
+    @JoinColumn(name = "subject")
+    private Subject subject;
 
-    public Course(String name, String founder, String subject){
-        this.name = name;
-        this.founder = founder;
-        this.subject = subject;
-    }
-
-    public Course() {
-
-    }
-
-    public Long getId(){
-        return id;
-    }
     public String getName() {
         return name;
     }
@@ -43,11 +30,11 @@ public class Course {
         this.founder = founder;
     }
 
-    public String getSubject() {
+    public Subject getSubject() {
         return subject;
     }
 
-    public void setSubject(String subject) {
+    public void setSubject(Subject subject) {
         this.subject = subject;
     }
 

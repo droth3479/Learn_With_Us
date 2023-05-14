@@ -5,15 +5,14 @@ import jakarta.persistence.*;
 @Entity
 public class Class {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
-
     @ManyToOne
-    @JoinColumn(name = "courseId")
+    @JoinColumn(name = "course_id")
     private Course course;
-
     @OneToOne(targetEntity = BaseContent.class)
+    @JoinColumn(name = "content_id")
     private Content content;
 
     public String getName() {
@@ -24,19 +23,29 @@ public class Class {
         this.name = name;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public Content getContent() {
         return content;
     }
 
     public void setContent(Content content) {
         this.content = content;
+    }
+
+    public Course getCourse() {
+        return course;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
+    }
+
+    @Override
+    public String toString() {
+        return "Class{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", course=" + course +
+                ", content=" + content +
+                '}';
     }
 }
