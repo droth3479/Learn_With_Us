@@ -2,7 +2,7 @@ package com.example.learn_with_us.views;
 
 import com.example.learn_with_us.data.entity.Course;
 import com.example.learn_with_us.data.repository.CourseRepository;
-import com.example.learn_with_us.data.services.CourseService;
+import com.example.learn_with_us.data.service.CourseService;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -48,7 +48,7 @@ public class CourseListView extends VerticalLayout {
     }
 
     private void updateList() {
-        grid.setItems(service.list());
+        grid.setItems(service.findAll());
     }
 
 }
