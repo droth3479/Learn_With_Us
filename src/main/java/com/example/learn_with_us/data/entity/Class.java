@@ -13,7 +13,7 @@ public class Class {
     private Course course;
     @OneToOne(targetEntity = BaseContent.class)
     @JoinColumn(name = "content_id")
-    private Content content;
+    private ClassContent content;
 
     public String getName() {
         return name;
@@ -23,11 +23,11 @@ public class Class {
         this.name = name;
     }
 
-    public Content getContent() {
+    public ClassContent getContent() {
         return content;
     }
 
-    public void setContent(Content content) {
+    public void setContent(ClassContent content) {
         this.content = content;
     }
 

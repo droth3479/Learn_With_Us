@@ -1,8 +1,7 @@
 package com.example.learn_with_us.views;
 
 import com.example.learn_with_us.data.entity.Course;
-import com.example.learn_with_us.data.repository.CourseRepository;
-import com.example.learn_with_us.data.service.CourseService;
+import com.example.learn_with_us.data.service.ContentService;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -15,11 +14,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Route(value = "courselist")
 public class CourseListView extends VerticalLayout {
 
-    private final CourseService service;
+    private final ContentService service;
     Grid<Course> grid;
     TextField filterText = new TextField();
 
-    public CourseListView(@Autowired CourseService service) {
+    public CourseListView(@Autowired ContentService service) {
         this.service = service;
         this.grid = new Grid<>(Course.class);
         addClassName("course-list-view");

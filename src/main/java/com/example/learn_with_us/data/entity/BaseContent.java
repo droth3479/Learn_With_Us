@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "content_type")
-public abstract class BaseContent implements Content{
+public abstract class BaseContent implements ClassContent {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

@@ -10,8 +10,6 @@ public class Course {
     private String name;
     private String founder;
     @Enumerated(value = EnumType.STRING)
-    @OneToOne
-    @JoinColumn(name = "subject")
     private Subject subject;
 
     public String getName() {
