@@ -1,7 +1,10 @@
 package com.example.learn_with_us.data.entity;
 
 import jakarta.persistence.*;
-
+/**
+ * The Class entity represents a class within the web server's course offering.
+ * Each class is associated with a specific course and contains class content.
+ */
 @Entity
 public class Class {
     @Id

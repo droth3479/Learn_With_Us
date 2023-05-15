@@ -10,7 +10,10 @@ import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.Route;
 import org.springframework.beans.factory.annotation.Autowired;
 
-//Todo Try to make a service https://vaadin.com/docs/latest/tutorial/database-access
+/**
+ * Represents the view for displaying a list of courses.
+ * The user will be able to select a course to visit its homepage.
+ */
 @Route(value = "courselist")
 public class CourseListView extends VerticalLayout {
 

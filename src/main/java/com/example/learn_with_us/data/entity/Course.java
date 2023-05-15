@@ -2,6 +2,11 @@ package com.example.learn_with_us.data.entity;
 
 import jakarta.persistence.*;
 
+/**
+ * The Course entity represents a course offered by the web server.
+ * A Course will share a one to many relationship with the Class object.
+ * Each course has a name, a founder, and a subject.
+ */
 @Entity
 public class Course {
     @Id

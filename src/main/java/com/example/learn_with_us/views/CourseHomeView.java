@@ -8,6 +8,10 @@ import com.vaadin.flow.router.BeforeEvent;
 import com.vaadin.flow.router.HasUrlParameter;
 import com.vaadin.flow.router.Route;
 
+/**
+ * Represents the view for the homepage of a specific course
+ * It displays the classes associated with that course.
+ */
 @Route(value = "coursehome", layout = MainView.class)
 public class CourseHomeView extends VerticalLayout
         implements HasUrlParameter<String> {

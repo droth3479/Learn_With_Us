@@ -15,6 +15,10 @@ import com.vaadin.flow.component.tabs.TabsVariant;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouterLink;
 
+/**
+ * Represents the main application view.
+ * It contains the navigation menu and the content area.
+ */
 @Route("")
 public class MainView extends AppLayout {
     private final Tabs menu;

@@ -11,6 +11,12 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * The {@code ContentService} class is a Facade class that provides service methods for managing courses, classes, and
+ * class content.
+ * It interacts with the {@code CourseRepository}, {@code ClassRepository}, and {@code ClassContentRepository} to
+ * perform CRUD operations.
+ */
 @Service
 public class ContentService {
     @Autowired
