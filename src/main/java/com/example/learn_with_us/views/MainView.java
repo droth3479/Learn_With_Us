@@ -12,12 +12,16 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.component.tabs.TabsVariant;
+import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouterLink;
+
+import java.util.Optional;
 
 /**
  * Represents the main application view.
  * It contains the navigation menu and the content area.
+ * Does not display any content, but serves as a container for the other views.
  */
 @Route("")
 public class MainView extends AppLayout {
@@ -50,8 +54,8 @@ public class MainView extends AppLayout {
         HorizontalLayout logoLayout = new HorizontalLayout();
         logoLayout.setId("logo");
         logoLayout.setAlignItems(FlexComponent.Alignment.CENTER);
-        logoLayout.add(new Image("images/logo.png", "My Project logo"));
-        logoLayout.add(new H1("My Project"));
+        logoLayout.add(new Image("logo.png", "Learn With Us logo"));
+        logoLayout.add(new H1("Learn With Us"));
 
         // Display the logo and the menu in the drawer
         layout.add(logoLayout, menu);
@@ -68,7 +72,11 @@ public class MainView extends AppLayout {
     }
 
     private Tab[] createMenuItems() {
-        return new Tab[] { createTab("Main", MainView.class) };
+        return new Tab[] {
+            createTab("Home", MainView.class),
+            createTab("Course List", CourseListView.class),
+            createTab("Course Constructor", CourseConstructorView.class),
+        };
     }
 
     private static Tab createTab(String text,
@@ -97,9 +105,28 @@ public class MainView extends AppLayout {
         viewTitle = new H1();
         layout.add(viewTitle);
 
-        // A user icon
-        layout.add(new Image("images/user.svg", "Avatar"));
-
         return layout;
+    }
+
+    @Override
+    protected void afterNavigation() {
+        super.afterNavigation();
+
+        // Select the tab corresponding to currently shown view
+        getTabForComponent(getContent()).ifPresent(menu::setSelectedTab);
+
+        // Set the view title in the header
+        viewTitle.setText(getCurrentPageTitle());
+    }
+
+    private Optional<Tab> getTabForComponent(Component component) {
+        return menu.getChildren()
+                .filter(tab -> ComponentUtil.getData(tab, Class.class)
+                        .equals(component.getClass()))
+                .findFirst().map(Tab.class::cast);
+    }
+
+    private String getCurrentPageTitle() {
+        return getContent().getClass().getAnnotation(PageTitle.class).value();
     }
 }

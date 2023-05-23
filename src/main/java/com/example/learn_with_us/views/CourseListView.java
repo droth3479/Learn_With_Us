@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * Represents the view for displaying a list of courses.
  * The user will be able to select a course to visit its homepage.
  */
-@Route(value = "courselist")
+@Route(layout = MainView.class)
 public class CourseListView extends VerticalLayout {
 
     private final ContentService service;
