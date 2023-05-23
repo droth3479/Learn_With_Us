@@ -1,8 +1,11 @@
 package com.example.learn_with_us.data.repository;
 
 import com.example.learn_with_us.data.entity.Class;
+import com.example.learn_with_us.data.entity.Course;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * The {@code ClassRepository} interface is a repository interface for managing class content entities.
@@ -10,4 +13,5 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface ClassRepository extends JpaRepository<Class, Long> {
+    List<Class> findByNameAndCourse(String className, Course course);
 }
