@@ -1,6 +1,7 @@
 package com.example.learn_with_us.data.entity;
 
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.html.IFrame;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 
@@ -18,6 +19,13 @@ public class VideoContent extends BaseContent{
      */
     @Override
     public Component display() {
-        return null;
+        IFrame iFrame = new IFrame(this.getSource());
+        iFrame.setHeight("315px");
+        iFrame.setWidth("560px");
+        iFrame.setAllow("accelerometer; autoplay; encrypted-media; gyroscope");
+        iFrame.getElement().setAttribute("allowfullscreen", true);
+        iFrame.getElement().setAttribute("frameborder", "0");
+
+        return iFrame;
     }
 }
