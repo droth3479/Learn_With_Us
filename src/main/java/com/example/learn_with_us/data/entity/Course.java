@@ -14,7 +14,8 @@ public class Course {
     private long id;
     private String name;
     private String founder;
-    @Enumerated(value = EnumType.STRING)
+    @ManyToOne
+    @JoinColumn(name = "subject_id")
     private Subject subject;
 
     public String getName() {

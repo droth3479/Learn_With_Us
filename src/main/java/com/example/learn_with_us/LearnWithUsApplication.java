@@ -23,7 +23,7 @@ public class LearnWithUsApplication {
         Course scienceCourse = new Course();
         scienceCourse.setName("Physics");
         scienceCourse.setFounder("Joe Shmoe");
-        scienceCourse.setSubject(Subject.SCIENCE);
+        scienceCourse.setSubject(new Subject("Science"));
 
         BaseContent scienceVideo = new VideoContent();
         scienceVideo.setSource("learnwithus/content/video/cokeandmentos");
