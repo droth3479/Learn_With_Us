@@ -7,6 +7,7 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
+import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * The user will be able to select a course to visit its homepage.
  */
 @Route(layout = MainView.class)
+@PageTitle("Courses")
 public class CourseListView extends VerticalLayout {
 
     private final ContentService service;
@@ -35,7 +37,8 @@ public class CourseListView extends VerticalLayout {
     private void configureGrid() {
         grid.addClassNames("course-grid");
         grid.setSizeFull();
-        grid.setColumns("name", "founder", "subject");
+        grid.setColumns("name", "founder");
+        grid.addColumn(course -> (course.getSubject().toString())).setHeader("subject");
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
     }
 
@@ -43,6 +46,7 @@ public class CourseListView extends VerticalLayout {
         filterText.setPlaceholder("Search by name...");
         filterText.setClearButtonVisible(true);
         filterText.setValueChangeMode(ValueChangeMode.LAZY);
+        filterText.addValueChangeListener(e -> updateList());
 
         HorizontalLayout toolbar = new HorizontalLayout(filterText);
         toolbar.addClassName("toolbar");
@@ -50,7 +54,7 @@ public class CourseListView extends VerticalLayout {
     }
 
     private void updateList() {
-        grid.setItems(service.findAll());
+        grid.setItems(service.findAllCourses(filterText.getValue()));
     }
 
 }

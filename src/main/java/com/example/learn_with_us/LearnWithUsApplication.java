@@ -20,10 +20,13 @@ public class LearnWithUsApplication {
 
     @PostConstruct
     public void init() {
+        Subject science = new Subject("Science");
+        service.addSubject(science);
+
         Course scienceCourse = new Course();
         scienceCourse.setName("Physics");
         scienceCourse.setFounder("Joe Shmoe");
-        scienceCourse.setSubject(new Subject("Science"));
+        scienceCourse.setSubject(science);
 
         BaseContent scienceVideo = new VideoContent();
         scienceVideo.setSource("learnwithus/content/video/cokeandmentos");
