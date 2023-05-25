@@ -13,8 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
  * Based on the user navigation, will display the appropriate class's content.
  */
 @Route(value = ":courseName/:className", layout = MainView.class)
-public class ClassView extends VerticalLayout implements BeforeEnterObserver {
+public class ClassView extends VerticalLayout implements BeforeEnterObserver, HasDynamicTitle {
     private String className;
+    private String title = "";
     private String courseName;
     private Class thisClass;
     private ContentService service;
@@ -39,5 +40,11 @@ public class ClassView extends VerticalLayout implements BeforeEnterObserver {
     public void beforeEnter(BeforeEnterEvent event) {
         courseName = event.getRouteParameters().get("courseName").toString();
         className = event.getRouteParameters().get("className").toString();
+        title = courseName + " : " + className;
+    }
+
+    @Override
+    public String getPageTitle() {
+        return title;
     }
 }

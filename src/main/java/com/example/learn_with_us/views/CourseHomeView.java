@@ -10,9 +10,7 @@ import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
-import com.vaadin.flow.router.BeforeEvent;
-import com.vaadin.flow.router.HasUrlParameter;
-import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -21,15 +19,17 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 @Route(value = "/:courseName", layout = MainView.class)
 public class CourseHomeView extends VerticalLayout
-        implements HasUrlParameter<String> {
+        implements HasUrlParameter<String>, HasDynamicTitle {
 
     private Course course;
+    private String title = "";
     private final ContentService service;
     private final Grid<com.example.learn_with_us.data.entity.Class> grid = new Grid<>(Class.class);
 
     @Override
     public void setParameter(BeforeEvent event, String parameter) {
         course = service.getCourse(event.getRouteParameters().get("courseName").toString());
+        title = course.getName();
     }
 
     public CourseHomeView(@Autowired ContentService service){
@@ -58,5 +58,10 @@ public class CourseHomeView extends VerticalLayout
         grid.setSizeFull();
         grid.setColumns("name");
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
+    }
+
+    @Override
+    public String getPageTitle() {
+        return title;
     }
 }

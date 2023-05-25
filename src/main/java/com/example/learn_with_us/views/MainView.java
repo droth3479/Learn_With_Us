@@ -24,6 +24,7 @@ import java.util.Optional;
  * Does not display any content, but serves as a container for the other views.
  */
 @Route("")
+@PageTitle("Main")
 public class MainView extends AppLayout {
     private final Tabs menu;
     private H1 viewTitle;
@@ -73,8 +74,8 @@ public class MainView extends AppLayout {
 
     private Tab[] createMenuItems() {
         return new Tab[] {
-            createTab("Home", MainView.class),
-            createTab("Course List", CourseListView.class),
+            createTab("Home", GreeterView.class),
+            createTab("Courses", CourseListView.class),
             createTab("Course Constructor", CourseConstructorView.class),
         };
     }
