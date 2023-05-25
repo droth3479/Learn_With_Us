@@ -3,9 +3,11 @@ package com.example.learn_with_us.data.service;
 import com.example.learn_with_us.data.entity.BaseContent;
 import com.example.learn_with_us.data.entity.Class;
 import com.example.learn_with_us.data.entity.Course;
+import com.example.learn_with_us.data.entity.Subject;
 import com.example.learn_with_us.data.repository.ClassContentRepository;
 import com.example.learn_with_us.data.repository.ClassRepository;
 import com.example.learn_with_us.data.repository.CourseRepository;
+import com.example.learn_with_us.data.repository.SubjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,9 +27,15 @@ public class ContentService {
     private ClassRepository classRepo;
     @Autowired
     private ClassContentRepository classContentRepo;
+    @Autowired
+    private SubjectRepository subjectRepository;
 
-    public List<Course> findAll(){
-        return courseRepo.findAll();
+    public List<Course> findAllCourses(String stringFilter) {
+        if (stringFilter == null || stringFilter.isEmpty()) {
+            return courseRepo.findAll();
+        } else {
+            return courseRepo.search(stringFilter);
+        }
     }
 
     public void addCourse(Course course) {
@@ -60,5 +68,13 @@ public class ContentService {
 
     public void addClassContent(BaseContent bc){
         classContentRepo.save(bc);
+    }
+
+    public void addSubject(Subject s){
+        subjectRepository.save(s);
+    }
+
+    public Subject getSubject(Long id){
+        return subjectRepository.findSubjectById(id).get(0);
     }
 }
