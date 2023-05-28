@@ -11,32 +11,36 @@ import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.*;
+import org.aspectj.lang.annotation.Before;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 
 /**
  * Represents the view for the homepage of a specific course
  * It displays the classes associated with that course.
  */
-@Route(value = "/:courseName", layout = MainView.class)
+@Route(value = "course", layout = MainView.class)
 public class CourseHomeView extends VerticalLayout
-        implements HasUrlParameter<String>, HasDynamicTitle {
+        implements HasUrlParameter<String>, HasDynamicTitle, AfterNavigationObserver {
 
     private Course course;
     private String title = "";
     private final ContentService service;
     private final Grid<com.example.learn_with_us.data.entity.Class> grid = new Grid<>(Class.class);
 
-    @Override
-    public void setParameter(BeforeEvent event, String parameter) {
-        course = service.getCourse(event.getRouteParameters().get("courseName").toString());
-        title = course.getName();
-    }
-
     public CourseHomeView(@Autowired ContentService service){
         this.service = service;
-
         setSizeFull();
+    }
 
+    @Override
+    public void setParameter(BeforeEvent event, String parameter) {
+        course = service.getCourse(parameter);
+        title = parameter;
+    }
+
+    @Override
+    public void afterNavigation(AfterNavigationEvent event) {
         add(getHeader());
 
         configureGrid();

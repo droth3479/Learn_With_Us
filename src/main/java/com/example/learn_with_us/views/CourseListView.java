@@ -2,6 +2,7 @@ package com.example.learn_with_us.views;
 
 import com.example.learn_with_us.data.entity.Course;
 import com.example.learn_with_us.data.service.ContentService;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -38,8 +39,11 @@ public class CourseListView extends VerticalLayout {
         grid.addClassNames("course-grid");
         grid.setSizeFull();
         grid.setColumns("name", "founder");
-        grid.addColumn(course -> (course.getSubject().toString())).setHeader("subject");
+        grid.addColumn(course -> (course.getSubject().toString())).setHeader("Subject").setSortable(true);
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
+
+        grid.asSingleSelect().addValueChangeListener(event ->
+                navigateToCourse(event.getValue()));
     }
 
     private HorizontalLayout getSearchbar() {
@@ -57,4 +61,7 @@ public class CourseListView extends VerticalLayout {
         grid.setItems(service.findAllCourses(filterText.getValue()));
     }
 
+    private void navigateToCourse(Course course) {
+        UI.getCurrent().navigate("/course/" + course.getName());
+    }
 }
