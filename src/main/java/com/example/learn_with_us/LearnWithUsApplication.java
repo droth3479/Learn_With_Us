@@ -18,26 +18,28 @@ public class LearnWithUsApplication {
         SpringApplication.run(LearnWithUsApplication.class, args);
     }
 
-    @PostConstruct
-    public void init() {
-        Subject science = new Subject("Science");
-        service.addSubject(science);
+// For testing purposes only
 
-        Course scienceCourse = new Course();
-        scienceCourse.setName("Physics");
-        scienceCourse.setFounder("Joe Shmoe");
-        scienceCourse.setSubject(science);
-
-        BaseContent scienceVideo = new VideoContent();
-        scienceVideo.setSource("learnwithus/content/video/cokeandmentos");
-
-        Class scienceClass = new Class();
-        scienceClass.setName("Chemical Reactions");
-        scienceClass.setCourse(scienceCourse);
-        scienceClass.setContent(scienceVideo);
-
-        service.addCourse(scienceCourse);
-        service.addClassContent(scienceVideo);
-        service.addClass(scienceClass);
-    }
+//    @PostConstruct
+//    public void init() {
+//        Subject science = new Subject("Science");
+//        service.addSubject(science);
+//
+//        Course scienceCourse = new Course();
+//        scienceCourse.setName("Physics");
+//        scienceCourse.setFounder("Joe Shmoe");
+//        scienceCourse.setSubject(science);
+//
+//        BaseContent scienceVideo = new VideoContent();
+//        scienceVideo.setSource("learnwithus/content/video/cokeandmentos");
+//
+//        Class scienceClass = new Class();
+//        scienceClass.setName("Chemical Reactions");
+//        scienceClass.setCourse(scienceCourse);
+//        scienceClass.setContent(scienceVideo);
+//
+//        service.addCourse(scienceCourse);
+//        service.addClassContent(scienceVideo);
+//        service.addClass(scienceClass);
+//    }
 }
