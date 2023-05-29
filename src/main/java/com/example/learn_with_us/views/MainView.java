@@ -12,6 +12,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.component.tabs.TabsVariant;
+import com.vaadin.flow.router.HasDynamicTitle;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouterLink;
@@ -127,7 +128,24 @@ public class MainView extends AppLayout {
                 .findFirst().map(Tab.class::cast);
     }
 
+    /**
+     * Gets page title of current component.
+     * If the component uses @PageTitle annotation, gets annotation.
+     * If component implements HasDynamicTitle, uses the interface's getter method.
+     * If neither system is used, sets a blank title.
+     * @return string representation of the current page title.
+     */
     private String getCurrentPageTitle() {
-        return getContent().getClass().getAnnotation(PageTitle.class).value();
+        String title;
+        try{
+            title = getContent().getClass().getAnnotation(PageTitle.class).value();
+        } catch (NullPointerException npe) {
+            if(getContent() instanceof HasDynamicTitle){
+                title = ((HasDynamicTitle) getContent()).getPageTitle();
+            }
+            else
+                title = "";
+        }
+        return title;
     }
 }
