@@ -10,37 +10,40 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Represents the view for an individual class.
- * Based on the user navigation, will display the appropriate class's content.
+ * Displays the classes content, either a video or text lesson.
  */
-@Route(value = ":courseName/:className", layout = MainView.class)
-public class ClassView extends VerticalLayout implements BeforeEnterObserver, HasDynamicTitle {
+@Route(value = "course/:courseName/class/:className", layout = MainView.class)
+public class ClassView extends VerticalLayout implements BeforeEnterObserver, HasDynamicTitle, AfterNavigationObserver {
     private String className;
     private String title = "";
     private String courseName;
     private Class thisClass;
-    private ContentService service;
+    private final ContentService service;
 
     public ClassView(@Autowired ContentService service) {
-        // Access the db to set the Class object
-        setClass(service);
+        this.service = service;
+        setSizeFull();
+    }
 
+    @Override
+    public void beforeEnter(BeforeEnterEvent event) {
+        courseName = event.getRouteParameters().get("courseName").orElseThrow();
+        className = event.getRouteParameters().get("className").orElseThrow();
+        title = courseName + ": " + className;
+    }
+
+    @Override
+    public void afterNavigation(AfterNavigationEvent event) {
+        thisClass = service.getClass(className, courseName);
+        configureContent();
+    }
+
+    private void configureContent() {
         add(new H1(courseName));
 
         // Add the class content
         Component classContent = thisClass.getContent().display();
         add(classContent);
-    }
-
-    private void setClass(ContentService service) {
-        this.service = service;
-        thisClass = service.getClass(className, courseName);
-    }
-
-    @Override
-    public void beforeEnter(BeforeEnterEvent event) {
-        courseName = event.getRouteParameters().get("courseName").toString();
-        className = event.getRouteParameters().get("className").toString();
-        title = courseName + " : " + className;
     }
 
     @Override

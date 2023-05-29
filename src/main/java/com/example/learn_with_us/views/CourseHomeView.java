@@ -4,6 +4,7 @@ import com.example.learn_with_us.data.entity.Class;
 import com.example.learn_with_us.data.entity.Course;
 import com.example.learn_with_us.data.service.ContentService;
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H2;
@@ -63,6 +64,13 @@ public class CourseHomeView extends VerticalLayout
         grid.setSizeFull();
         grid.setColumns("name");
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
+
+        grid.asSingleSelect().addValueChangeListener(event ->
+                navigateToClass(event.getValue()));
+    }
+
+    private void navigateToClass(Class c) {
+        UI.getCurrent().navigate("/course/" + course.getName() + "/class/" + c.getName());
     }
 
     private void updateList() {
