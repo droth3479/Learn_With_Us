@@ -66,6 +66,15 @@ public class ContentService {
             getCourse(courseName)).get(0);
     }
 
+    /**
+     * Gets all classes that are joined to the provided course entity.
+     * @param course The course which will be used as a join.
+     * @return All classes whose course_id joins with the courseName param.
+     */
+    public List<Class> getClassesInCourse(Course course) {
+        return classRepo.findByCourse(course);
+    }
+
     public void addClassContent(BaseContent bc){
         classContentRepo.save(bc);
     }

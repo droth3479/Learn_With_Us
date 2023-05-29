@@ -45,6 +45,7 @@ public class CourseHomeView extends VerticalLayout
 
         configureGrid();
         add(grid);
+        updateList();
     }
 
     private VerticalLayout getHeader() {
@@ -62,6 +63,10 @@ public class CourseHomeView extends VerticalLayout
         grid.setSizeFull();
         grid.setColumns("name");
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
+    }
+
+    private void updateList() {
+        grid.setItems(service.getClassesInCourse(course));
     }
 
     @Override
