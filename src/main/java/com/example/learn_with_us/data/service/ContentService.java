@@ -28,7 +28,7 @@ public class ContentService {
     @Autowired
     private ClassContentRepository classContentRepo;
     @Autowired
-    private SubjectRepository subjectRepository;
+    private SubjectRepository subjectRepo;
 
     public List<Course> findAllCourses(String stringFilter) {
         if (stringFilter == null || stringFilter.isEmpty()) {
@@ -80,10 +80,14 @@ public class ContentService {
     }
 
     public void addSubject(Subject s){
-        subjectRepository.save(s);
+        subjectRepo.save(s);
     }
 
-    public Subject getSubject(Long id){
-        return subjectRepository.findSubjectById(id).get(0);
+    public List<Subject> getSubject(String name){
+        return subjectRepo.findSubjectByName(name);
+    }
+
+    public List<Subject> findAllSubjects() {
+        return subjectRepo.findAll();
     }
 }

@@ -1,7 +1,7 @@
 package com.example.learn_with_us.data.entity;
 
 import jakarta.persistence.*;
-import org.hibernate.validator.constraints.UniqueElements;
+import jakarta.validation.constraints.NotNull;
 
 /**
  * The Course entity represents a course offered by the web server.
@@ -14,10 +14,13 @@ public class Course {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @Column(unique = true)
+    @NotNull
     private String name;
+    @NotNull
     private String founder;
     @ManyToOne
     @JoinColumn(name = "subject_id")
+    @NotNull
     private Subject subject;
 
     public String getName() {

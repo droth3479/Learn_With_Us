@@ -12,5 +12,5 @@ import java.util.List;
  */
 @Repository
 public interface SubjectRepository extends JpaRepository<Subject, Long> {
-    List<Subject> findSubjectById(Long id);
+    List<Subject> findSubjectByName(String name);
 }
