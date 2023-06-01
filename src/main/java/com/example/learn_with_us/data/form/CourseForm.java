@@ -33,11 +33,16 @@ public class CourseForm extends FormLayout {
     
     public CourseForm(List<Subject> subjects) {
         binder.bindInstanceFields(this);
+
+        subject.setItems(subjects);
+        subject.setItemLabelGenerator(Subject::toString);
         
         add(name,
             founder,
             subject,
             createButtonsLayout());
+
+        setWidth("25em");
     }
     
     public void setCourse(Course course){

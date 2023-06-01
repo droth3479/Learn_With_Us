@@ -24,7 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 @PageTitle("Course Constructor")
 public class CourseConstructorView extends VerticalLayout {
     CourseForm form;
-    Button addSubject = new Button("Add a subject");
+    Button addSubject;
     ContentService service;
 
     CourseConstructorView(@Autowired ContentService service) {
@@ -32,6 +32,7 @@ public class CourseConstructorView extends VerticalLayout {
 
         configureHeader();
         configureForm();
+        configureButton();
 
         add(form);
         add(addSubject);
@@ -48,6 +49,11 @@ public class CourseConstructorView extends VerticalLayout {
         form.setVisible(true);
         form.addSaveListener(this::saveCourse);
         form.addClearListener(e -> clearForm());
+    }
+
+    private void configureButton() {
+        addSubject = new Button("Add a subject");
+        addSubject.addClickListener(event -> subjectDialog());
     }
 
     private void saveCourse(CourseForm.SaveEvent saveEvent) {
@@ -75,7 +81,7 @@ public class CourseConstructorView extends VerticalLayout {
         dialog.open();
     }
 
-    private void openDialog() {
+    private void subjectDialog() {
         Dialog dialog = new Dialog();
         TextField subject = new TextField("New Subject");
 
@@ -89,6 +95,8 @@ public class CourseConstructorView extends VerticalLayout {
         Button cancelButton = new Button("Cancel", e -> dialog.close());
         dialog.getFooter().add(cancelButton);
         dialog.getFooter().add(saveButton);
+
+        dialog.open();
     }
 
     private void saveSubject(String name) {
