@@ -34,8 +34,7 @@ public class CourseForm extends FormLayout {
     public CourseForm(List<Subject> subjects) {
         binder.bindInstanceFields(this);
 
-        subject.setItems(subjects);
-        subject.setItemLabelGenerator(Subject::toString);
+        configureSubjects(subjects);
         
         add(name,
             founder,
@@ -47,6 +46,11 @@ public class CourseForm extends FormLayout {
     
     public void setCourse(Course course){
         binder.setBean(course);
+    }
+
+    public void configureSubjects(List<Subject> subjects) {
+        subject.setItems(subjects);
+        subject.setItemLabelGenerator(Subject::toString);
     }
 
     public static abstract class CourseFormEvent extends ComponentEvent<CourseForm> {

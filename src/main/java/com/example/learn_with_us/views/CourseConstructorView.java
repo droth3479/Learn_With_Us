@@ -44,6 +44,11 @@ public class CourseConstructorView extends VerticalLayout {
     }
 
     private void configureForm() {
+        System.out.println("Form configured");
+        for (Subject s :
+                service.findAllSubjects()) {
+            System.out.println(s.toString());
+        }
         form = new CourseForm(service.findAllSubjects());
         form.setCourse(new Course());
         form.setVisible(true);
@@ -89,6 +94,7 @@ public class CourseConstructorView extends VerticalLayout {
         dialog.add(subject);
 
         Button saveButton = new Button("Save", e -> {
+            System.out.println("Save button");
             saveSubject(subject.getValue());
             dialog.close();
         });
@@ -100,7 +106,8 @@ public class CourseConstructorView extends VerticalLayout {
     }
 
     private void saveSubject(String name) {
+        System.out.println("Save method called");
         service.addSubject(new Subject(name));
-        configureForm();
+        form.configureSubjects(service.findAllSubjects());
     }
 }
