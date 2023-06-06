@@ -110,15 +110,12 @@ public class CourseHomeView extends VerticalLayout
     }
 
     private void saveClass(ClassForm.SaveEvent event) {
-        Class newClass;
-        service.addClass((newClass = event.getThisClass()));
-        newClass.setCourse(course);
-
         updateList();
         form.setVisible(false);
     }
 
     private void closeForm(ClassForm.CloseEvent event){
+        updateList();
         form.setVisible(false);
     }
 
