@@ -23,7 +23,6 @@ public class AccountOverviewView extends VerticalLayout {
     private User user;
     private final AccountService service;
     private Grid<User> grid;
-    private TextField filterText = new TextField();
 
     public AccountOverviewView(@Autowired AccountService service) {
         this.service = service;
@@ -62,10 +61,13 @@ public class AccountOverviewView extends VerticalLayout {
     }
 
     private void configureGrid() {
-        grid = new Grid<User>();
+        grid = new Grid<>(User.class);
         grid.setSizeFull();
-        grid.setColumns("username", "password", "time created", "admin status");
+        grid.setColumns("username", "password");
+        grid.addColumn(User::getCreationString).setHeader("Creation Time");
+        grid.addColumn(User::getAdminString).setHeader("Account Status");
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
+        grid.setVisible(true);
     }
 
     private void updateList() {

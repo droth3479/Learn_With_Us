@@ -49,12 +49,20 @@ public class User {
         return creationTimestamp;
     }
 
+    public String getCreationString(){
+        return creationTimestamp.toString();
+    }
+
     public void setCreationTimestamp(Timestamp creationTimestamp) {
         this.creationTimestamp = creationTimestamp;
     }
 
     public boolean isAdmin() {
         return isAdmin;
+    }
+
+    public String getAdminString(){
+        return isAdmin ? "Admin" : "Standard User";
     }
 
     public void setAdmin(boolean admin) {
