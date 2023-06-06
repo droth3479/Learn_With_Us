@@ -1,9 +1,13 @@
 package com.example.learn_with_us.views;
 
+import com.example.learn_with_us.data.entity.User;
+import com.example.learn_with_us.data.service.AccountService;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentUtil;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
@@ -14,9 +18,10 @@ import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.component.tabs.TabsVariant;
 import com.vaadin.flow.router.HasDynamicTitle;
 import com.vaadin.flow.router.PageTitle;
-import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouterLink;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 /**
@@ -25,10 +30,16 @@ import java.util.Optional;
  * Does not display any content, but serves as a container for the other views.
  */
 public class MainView extends AppLayout {
+    AccountService accountService;
+    User user;
     private final Tabs menu;
     private H1 viewTitle;
 
-    public MainView() {
+    public MainView(@Autowired AccountService accountService) {
+        //For now, instantiating a user programatically.
+        this.accountService = accountService;
+        user = accountService.findUser("dave");
+
         // Use the drawer for the menu
         setPrimarySection(Section.DRAWER);
 
@@ -72,18 +83,30 @@ public class MainView extends AppLayout {
     }
 
     private Tab[] createMenuItems() {
-        return new Tab[] {
-            createTab("Home", HomeView.class),
-            createTab("Courses", CourseListView.class),
-            createTab("Course Constructor", CourseConstructorView.class),
-        };
+        ArrayList<Tab> tabs = new ArrayList<Tab>();
+        tabs.add(createTab("Home", HomeView.class));
+        tabs.add(createTab("Courses", CourseListView.class));
+        tabs.add(createTab("Course Constructor", CourseConstructorView.class));
+        if(user.isAdmin()){
+            tabs.add(createAdminTab());
+        }
+
+        return tabs.toArray(new Tab[0]);
     }
 
-    private static Tab createTab(String text,
-                                 java.lang.Class<? extends Component> navigationTarget) {
+    private static Tab createTab(String text, java.lang.Class<? extends Component> navigationTarget) {
         final Tab tab = new Tab();
         tab.add(new RouterLink(text, navigationTarget));
         ComponentUtil.setData(tab, java.lang.Class.class, navigationTarget);
+        return tab;
+    }
+
+    private Tab createAdminTab() {
+        final Tab tab = new Tab();
+        tab.add(new Button("Account Overview", event -> {
+            UI.getCurrent().navigate(AccountOverviewView.class)
+                    .ifPresent(view -> view.setUserAndValidate(user));
+        }));
         return tab;
     }
 
