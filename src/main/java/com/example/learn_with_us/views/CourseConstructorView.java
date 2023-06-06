@@ -44,11 +44,6 @@ public class CourseConstructorView extends VerticalLayout {
     }
 
     private void configureForm() {
-        System.out.println("Form configured");
-        for (Subject s :
-                service.findAllSubjects()) {
-            System.out.println(s.toString());
-        }
         form = new CourseForm(service.findAllSubjects());
         form.setCourse(new Course());
         form.setVisible(true);
