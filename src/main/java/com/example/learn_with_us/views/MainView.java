@@ -39,6 +39,7 @@ public class MainView extends AppLayout {
         //For now, instantiating a user programatically.
         this.accountService = accountService;
         user = accountService.findUser("dave");
+        System.out.println(user.isAdmin());
 
         // Use the drawer for the menu
         setPrimarySection(Section.DRAWER);
@@ -88,6 +89,7 @@ public class MainView extends AppLayout {
         tabs.add(createTab("Courses", CourseListView.class));
         tabs.add(createTab("Course Constructor", CourseConstructorView.class));
         if(user.isAdmin()){
+            System.out.println("Admin user");
             tabs.add(createAdminTab());
         }
 
@@ -107,6 +109,7 @@ public class MainView extends AppLayout {
             UI.getCurrent().navigate(AccountOverviewView.class)
                     .ifPresent(view -> view.setUserAndValidate(user));
         }));
+        ComponentUtil.setData(tab, java.lang.Class.class, AccountOverviewView.class);
         return tab;
     }
 
