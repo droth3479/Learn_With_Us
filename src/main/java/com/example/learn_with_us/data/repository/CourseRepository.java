@@ -17,9 +17,7 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
     List<Course> findCourseByName(String name);
 
     @Query("select c from Course c " +
-            "where lower(c.founder) like lower(concat('%', :searchTerm, '%')) " +
-            "or lower(c.name) like lower(concat('%', :searchTerm, '%'))" +
-            "or lower(c.subject) like lower(concat('%', :searchTerm, '%'))"
+            "where lower(c.name) like lower(concat('%', :searchTerm, '%'))"
     )
     List<Course> search(@Param("searchTerm") String searchTerm);
 }
