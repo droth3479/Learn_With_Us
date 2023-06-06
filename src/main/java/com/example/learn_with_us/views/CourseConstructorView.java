@@ -90,11 +90,10 @@ public class CourseConstructorView extends VerticalLayout {
         Dialog dialog = new Dialog();
         TextField subject = new TextField("New Subject");
 
-        dialog.setHeaderTitle("New employee");
+        dialog.setHeaderTitle("New Subject");
         dialog.add(subject);
 
         Button saveButton = new Button("Save", e -> {
-            System.out.println("Save button");
             saveSubject(subject.getValue());
             dialog.close();
         });
@@ -106,7 +105,6 @@ public class CourseConstructorView extends VerticalLayout {
     }
 
     private void saveSubject(String name) {
-        System.out.println("Save method called");
         service.addSubject(new Subject(name));
         form.configureSubjects(service.findAllSubjects());
     }

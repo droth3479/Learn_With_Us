@@ -1,9 +1,6 @@
 package com.example.learn_with_us.data.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 /**
  * The Subject enum represents the subjects associated with courses in the web server.
@@ -14,6 +11,7 @@ public class Subject {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @Column(unique = true)
     private String name;
 
     public Subject() {
