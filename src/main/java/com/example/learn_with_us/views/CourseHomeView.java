@@ -2,19 +2,18 @@ package com.example.learn_with_us.views;
 
 import com.example.learn_with_us.data.entity.Class;
 import com.example.learn_with_us.data.entity.Course;
+import com.example.learn_with_us.data.form.ClassForm;
 import com.example.learn_with_us.data.service.ContentService;
-import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.H3;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.*;
-import org.aspectj.lang.annotation.Before;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 
 /**
  * Represents the view for the homepage of a specific course
@@ -27,8 +26,16 @@ public class CourseHomeView extends VerticalLayout
     private Course course;
     private String title = "";
     private final ContentService service;
-    private final Grid<com.example.learn_with_us.data.entity.Class> grid = new Grid<>(Class.class);
 
+    private final Grid<com.example.learn_with_us.data.entity.Class> grid = new Grid<>(Class.class);
+    private ClassForm form;
+    private Button addClassButton;
+
+    /**
+     * Some typical constructor functions can only be run after setParameter.
+     * As such, they are included in afterNavigation.
+     * @param service The facade for db access methods.
+     */
     public CourseHomeView(@Autowired ContentService service){
         this.service = service;
         setSizeFull();
@@ -40,23 +47,18 @@ public class CourseHomeView extends VerticalLayout
         title = parameter;
     }
 
+    /**
+     * Configures the view after the correct course is fetched from the db.
+     * Takes the place of the constructor.
+     */
     @Override
     public void afterNavigation(AfterNavigationEvent event) {
-        add(getHeader());
-
         configureGrid();
-        add(grid);
+        configureForm();
+        configureButton();
+
+        add(getHeader(), getContent());
         updateList();
-    }
-
-    private VerticalLayout getHeader() {
-        VerticalLayout header = new VerticalLayout();
-
-        header.add(new H1(course.getName()));
-        header.add(new H3(course.getSubject().toString()));
-        header.add(new H2("Founded by: " + course.getFounder()));
-
-        return header;
     }
 
     private void configureGrid() {
@@ -67,6 +69,57 @@ public class CourseHomeView extends VerticalLayout
 
         grid.asSingleSelect().addValueChangeListener(event ->
                 navigateToClass(event.getValue()));
+    }
+
+    private void configureForm() {
+        form = new ClassForm(service, course);
+        form.setWidth("25em");
+        form.setVisible(false);
+        form.addSaveListener(this::saveClass);
+        form.addCloseListener(this::closeForm);
+    }
+
+    private void configureButton() {
+        addClassButton = new Button("Add Class");
+        addClassButton.addClickListener(click -> addClass());
+    }
+
+    private void addClass() {
+        form.setClass(new Class());
+        form.setVisible(true);
+    }
+
+    private VerticalLayout getHeader() {
+        VerticalLayout header = new VerticalLayout();
+
+        header.add(new H1(course.getName()));
+        header.add(new H3(course.getSubject().toString()));
+        header.add(new H2("Founded by: " + course.getFounder()));
+        header.add(addClassButton);
+
+        return header;
+    }
+
+    private HorizontalLayout getContent() {
+        HorizontalLayout content = new HorizontalLayout(grid, form);
+        content.setFlexGrow(2, grid);
+        content.setFlexGrow(1, form);
+        content.addClassNames("content");
+        content.setSizeFull();
+        return content;
+    }
+
+    private void saveClass(ClassForm.SaveEvent event) {
+        Class newClass;
+        service.addClass((newClass = event.getThisClass()));
+        newClass.setCourse(course);
+
+        updateList();
+        form.setVisible(false);
+    }
+
+    private void closeForm(ClassForm.CloseEvent event){
+        form.setVisible(false);
     }
 
     private void navigateToClass(Class c) {
