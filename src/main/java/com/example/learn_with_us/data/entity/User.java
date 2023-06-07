@@ -23,7 +23,9 @@ public class User {
     private String password;
     @CreationTimestamp
     private Timestamp creationTimestamp;
-    private boolean isAdmin;
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+    private Role role;
 
     public long getId() {
         return id;
@@ -57,16 +59,16 @@ public class User {
         this.creationTimestamp = creationTimestamp;
     }
 
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
     public boolean isAdmin() {
-        return isAdmin;
-    }
-
-    public String getAdminString(){
-        return isAdmin ? "Admin" : "Standard User";
-    }
-
-    public void setAdmin(boolean admin) {
-        isAdmin = admin;
+        return role.toString().equals("Admin");
     }
 
     @Override
@@ -76,7 +78,7 @@ public class User {
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", creationTimestamp=" + creationTimestamp +
-                ", isAdmin=" + isAdmin +
+                ", isAdmin=" + role +
                 '}';
     }
 }
