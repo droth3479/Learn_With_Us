@@ -1,14 +1,20 @@
 package com.example.learn_with_us.views;
 
+import com.example.learn_with_us.data.entity.Role;
 import com.example.learn_with_us.data.entity.User;
 import com.example.learn_with_us.data.service.AccountService;
-import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.grid.editor.Editor;
+import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.radiobutton.RadioButtonGroup;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +29,7 @@ public class AccountOverviewView extends VerticalLayout {
     private User user;
     private final AccountService service;
     private Grid<User> grid;
+    private Editor<User> editor;
 
     public AccountOverviewView(@Autowired AccountService service) {
         this.service = service;
@@ -32,7 +39,9 @@ public class AccountOverviewView extends VerticalLayout {
     public void setUserAndValidate(User user) {
         this.user = user;
         if(user != null && user.isAdmin()){
-            configureView();
+            if(grid == null){
+                configureView();
+            }
         }
         else{
             errorDialog();
@@ -61,13 +70,61 @@ public class AccountOverviewView extends VerticalLayout {
     }
 
     private void configureGrid() {
-        grid = new Grid<>(User.class);
+        grid = new Grid<>(User.class, false);
+        editor = grid.getEditor();
+        Binder<User> binder = new Binder<>(User.class);
+        editor.setBinder(binder);
+        editor.setBuffered(true);
+
         grid.setSizeFull();
+
         grid.setColumns("username", "password");
         grid.addColumn(User::getCreationString).setHeader("Creation Time");
-        grid.addColumn(User::getAdminString).setHeader("Account Status");
+        grid.addColumn(User::getRole).setHeader("Account Status");
+        Grid.Column<User> editColumn = grid.addComponentColumn(user -> {
+            Button editButton = new Button("Edit");
+            editButton.addClickListener(e -> {
+                if (editor.isOpen())
+                    editor.cancel();
+                binder.setBean(user);
+                grid.getEditor().editItem(user);
+            });
+            return editButton;
+        }).setWidth("150px").setFlexGrow(0);
+
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
         grid.setVisible(true);
+
+        TextField usernameField = new TextField();
+        usernameField.setWidthFull();
+        binder.forField(usernameField)
+                .bind(User::getUsername, User::setUsername);
+        grid.getColumns().get(0).setEditorComponent(usernameField);
+
+        TextField passwordField = new TextField();
+        passwordField.setWidthFull();
+        binder.forField(passwordField)
+                .bind(User::getPassword, User::setPassword);
+        grid.getColumns().get(1).setEditorComponent(passwordField);
+
+        RadioButtonGroup<Role> roleCheckbox = new RadioButtonGroup<>("Role", service.findAllRoles());
+        binder.forField(roleCheckbox)
+                .bind(User::getRole, User::setRole);
+        grid.getColumns().get(3).setEditorComponent(roleCheckbox);
+
+        Button saveButton = new Button("Save", e -> {
+            service.updateUser(editor.getItem());
+            System.out.println(editor.save());
+
+        });
+        Button cancelButton = new Button(VaadinIcon.CLOSE.create(),
+                e -> editor.cancel());
+        cancelButton.addThemeVariants(ButtonVariant.LUMO_ICON,
+                ButtonVariant.LUMO_ERROR);
+        HorizontalLayout actions = new HorizontalLayout(saveButton,
+                cancelButton);
+        actions.setPadding(false);
+        editColumn.setEditorComponent(actions);
     }
 
     private void updateList() {
