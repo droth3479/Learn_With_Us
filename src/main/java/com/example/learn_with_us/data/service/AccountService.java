@@ -22,6 +22,9 @@ public class AccountService {
     public List<User> findAllUsers() {
         return userRepo.findAll();
     }
+    public User validateUser(String username, String password){
+        return userRepo.findByUsernameAndPassword(username, password);
+    }
 
     public List<Role> findAllRoles() {return roleRepo.findAll();}
     public void updateUser(User user){
