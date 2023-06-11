@@ -22,6 +22,10 @@ public class Course {
     @JoinColumn(name = "subject_id")
     @NotNull
     private Subject subject;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    @NotNull
+    private User user;
 
     public String getName() {
         return name;
@@ -47,6 +51,14 @@ public class Course {
         this.subject = subject;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     @Override
     public String toString() {
         return "Course{" +
@@ -54,6 +66,9 @@ public class Course {
                 ", name='" + name + '\'' +
                 ", founder='" + founder + '\'' +
                 ", subject='" + subject + '\'' +
+                ", user='" + user + '\'' +
                 '}';
     }
+
+
 }

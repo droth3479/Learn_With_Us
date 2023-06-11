@@ -1,6 +1,9 @@
 package com.example.learn_with_us.data.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 /**
  * The Class entity represents a class within the web server's course offering.
  * Each class is associated with a specific course and contains class content.
@@ -13,10 +16,16 @@ public class Class {
     private String name;
     @ManyToOne
     @JoinColumn(name = "course_id")
+    @NotNull
     private Course course;
     @OneToOne(targetEntity = BaseContent.class)
     @JoinColumn(name = "content_id")
+    @NotNull
     private ClassContent content;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    @NotNull
+    private User user;
 
     public String getName() {
         return name;
@@ -42,6 +51,14 @@ public class Class {
         this.course = course;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     @Override
     public String toString() {
         return "Class{" +
@@ -49,6 +66,7 @@ public class Class {
                 ", name='" + name + '\'' +
                 ", course=" + course +
                 ", content=" + content +
+                ", user=" + user +
                 '}';
     }
 }
