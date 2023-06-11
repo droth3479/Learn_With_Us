@@ -2,6 +2,7 @@ package com.example.learn_with_us.views;
 
 import com.example.learn_with_us.data.entity.Class;
 import com.example.learn_with_us.data.entity.Course;
+import com.example.learn_with_us.data.entity.User;
 import com.example.learn_with_us.data.form.ClassForm;
 import com.example.learn_with_us.data.service.ContentService;
 import com.vaadin.flow.component.UI;
@@ -21,11 +22,12 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 @Route(value = "course", layout = MainView.class)
 public class CourseHomeView extends VerticalLayout
-        implements HasUrlParameter<String>, HasDynamicTitle, AfterNavigationObserver {
+        implements HasUrlParameter<String>, HasDynamicTitle {
 
     private Course course;
     private String title = "";
     private final ContentService service;
+    private User user;
 
     private final Grid<com.example.learn_with_us.data.entity.Class> grid = new Grid<>(Class.class);
     private ClassForm form;
@@ -47,12 +49,16 @@ public class CourseHomeView extends VerticalLayout
         title = parameter;
     }
 
+    public void validateLogin(User user){
+        this.user = user;
+        configureView();
+    }
+
     /**
-     * Configures the view after the correct course is fetched from the db.
+     * Configures the view after the correct course is fetched from the db, and valid user is sent.
      * Takes the place of the constructor.
      */
-    @Override
-    public void afterNavigation(AfterNavigationEvent event) {
+    public void configureView() {
         configureGrid();
         configureForm();
         configureButton();

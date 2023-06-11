@@ -77,6 +77,7 @@ public class CourseListView extends VerticalLayout {
     }
 
     private void navigateToCourse(Course course) {
-        UI.getCurrent().navigate("/course/" + course.getName());
+        UI.getCurrent().navigate(CourseHomeView.class, course.getName())
+                .ifPresent(e -> validateLogin(user));
     }
 }
