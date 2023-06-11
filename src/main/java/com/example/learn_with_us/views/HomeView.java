@@ -54,7 +54,8 @@ public class HomeView extends VerticalLayout {
 
     private void validateLogin(String username, String password) {
         if((user = accountService.validateUser(username, password)) != null){
-            UI.getCurrent().navigate(CourseListView.class);
+            UI.getCurrent().navigate(CourseListView.class)
+                    .ifPresent(view -> view.validateLogin(user));
         }
         else{
             errorMessage.setText("Invalid login attempt. Please try again.");

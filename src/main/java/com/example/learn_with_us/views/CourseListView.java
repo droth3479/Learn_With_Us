@@ -1,6 +1,7 @@
 package com.example.learn_with_us.views;
 
 import com.example.learn_with_us.data.entity.Course;
+import com.example.learn_with_us.data.entity.User;
 import com.example.learn_with_us.data.service.ContentService;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.grid.Grid;
@@ -19,18 +20,32 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Route(layout = MainView.class)
 @PageTitle("Courses")
 public class CourseListView extends VerticalLayout {
-
     private final ContentService service;
     Grid<Course> grid;
     TextField filterText = new TextField();
+    private User user;
 
     public CourseListView(@Autowired ContentService service) {
         this.service = service;
         this.grid = new Grid<>(Course.class);
         addClassName("course-list-view");
         setSizeFull();
-        configureGrid();
+    }
 
+    /**
+     * Only finish view configuration if valid user is passed along.
+     * @param user The currently logged in user.
+     */
+    public void validateLogin(User user) {
+        this.user = user;
+        configureView();
+    }
+
+    /**
+     * The rest of the constructor, only to be completed upon confirmation of valid login.
+     */
+    private void configureView() {
+        configureGrid();
         add(getSearchbar(), grid);
         updateList();
     }
