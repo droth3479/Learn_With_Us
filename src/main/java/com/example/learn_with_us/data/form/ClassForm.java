@@ -2,6 +2,7 @@ package com.example.learn_with_us.data.form;
 
 import com.example.learn_with_us.data.entity.Class;
 import com.example.learn_with_us.data.entity.Course;
+import com.example.learn_with_us.data.entity.User;
 import com.example.learn_with_us.data.entity.VideoContent;
 import com.example.learn_with_us.data.service.ContentService;
 import com.vaadin.flow.component.Component;
@@ -15,8 +16,6 @@ import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.shared.Registration;
-
-import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -24,6 +23,7 @@ public class ClassForm extends FormLayout {
     Class thisClass;
     ContentService service;
     Course course;
+    User user;
 
     Label courseLabel = new Label();
     TextField name = new TextField("Class Name");
@@ -59,6 +59,10 @@ public class ClassForm extends FormLayout {
 
     public void setClass(Class thisClass){
         this.thisClass = thisClass;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public void configureCourseLabel(){
@@ -108,6 +112,7 @@ public class ClassForm extends FormLayout {
             thisClass.setCourse(course);
             thisClass.setName(name.getValue());
             thisClass.setContent(video);
+            thisClass.setUser(user);
 
             service.addClass(thisClass);
         }

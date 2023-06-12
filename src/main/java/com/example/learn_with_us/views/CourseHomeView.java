@@ -101,6 +101,7 @@ public class CourseHomeView extends VerticalLayout
 
     private void addClass() {
         form.setClass(new Class());
+        form.setUser(user);
         form.setVisible(true);
     }
 
