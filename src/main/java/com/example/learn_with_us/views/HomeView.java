@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * The landing page view - what the user will see when they first come to the site.
+ * If logged in, allows navigation to main site. Otherwise, provides login form.
  */
 @Route(value = "")
 @PageTitle("Home")
