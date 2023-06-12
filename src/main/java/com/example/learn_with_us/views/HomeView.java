@@ -16,25 +16,49 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * The landing page view - what the user will see when they first come to the site.
  */
-@Route(value = "", layout = MainView.class)
+@Route(value = "")
 @PageTitle("Home")
 public class HomeView extends VerticalLayout {
     User user;
     AccountService accountService;
     Label errorMessage = new Label();
+    Button actionButton;
 
     public HomeView(@Autowired AccountService accountService) {
         this.accountService = accountService;
 
         setAlignItems(Alignment.CENTER);
 
-        add(new H1("Come Learn With Us"), getNavButton());
+        add(new H1("Come Learn With Us"));
+
+        configureButton();
     }
 
-    private Button getNavButton() {
+    private void configureButton() {
+        remove(actionButton);
+        if(user != null)
+            actionButton = getNavButton();
+        else
+            actionButton = getLoginButton();
+        add(actionButton);
+    }
+
+    private Button getLoginButton() {
         Button button = new Button("Log in to get started!");
         button.addClickListener(e -> loginDialog());
         return button;
+    }
+
+    private Button getNavButton() {
+        Button button = new Button("Click to get started!");
+        button.addClickListener(e -> UI.getCurrent().navigate(CourseListView.class)
+                .ifPresent(page -> page.validateLogin(user)));
+        return button;
+    }
+
+    public void validateLogin(User user){
+        this.user = user;
+        configureButton();
     }
 
     private void loginDialog() {
