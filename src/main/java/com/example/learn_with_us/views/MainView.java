@@ -2,7 +2,6 @@ package com.example.learn_with_us.views;
 
 import com.example.learn_with_us.beans.UserBean;
 import com.example.learn_with_us.data.entity.User;
-import com.example.learn_with_us.data.service.AccountService;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentUtil;
 import com.vaadin.flow.component.UI;
@@ -130,7 +129,13 @@ public class MainView extends AppLayout {
         layout.add(viewTitle);
 
         //Logout button, to be displayed on top right
-        Button logoutButton = new Button("Log out " + user.getUsername(), e -> userBean.logout());
+        Button logoutButton = new Button("Log out " + user.getUsername(), e -> {
+            userBean.logout();
+            UI.getCurrent().navigate(HomeView.class);
+        });
+        layout.add(logoutButton);
+
+        layout.expand(viewTitle);
 
         return layout;
     }
