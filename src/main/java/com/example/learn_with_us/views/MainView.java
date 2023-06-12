@@ -1,5 +1,6 @@
 package com.example.learn_with_us.views;
 
+import com.example.learn_with_us.beans.UserBean;
 import com.example.learn_with_us.data.entity.User;
 import com.example.learn_with_us.data.service.AccountService;
 import com.vaadin.flow.component.Component;
@@ -30,16 +31,14 @@ import java.util.Optional;
  * Does not display any content, but serves as a container for the other views.
  */
 public class MainView extends AppLayout {
-    AccountService accountService;
+    UserBean userBean;
     User user;
     private final Tabs menu;
     private H1 viewTitle;
 
-    public MainView(@Autowired AccountService accountService) {
-        //For now, instantiating a user programatically.
-        this.accountService = accountService;
-        user = accountService.findUser("dave");
-        System.out.println(user.isAdmin());
+    public MainView(@Autowired UserBean userBean) {
+        this.userBean = userBean;
+        this.user = userBean.getUser();
 
         // Use the drawer for the menu
         setPrimarySection(Section.DRAWER);
@@ -89,7 +88,6 @@ public class MainView extends AppLayout {
         tabs.add(createTab("Courses", CourseListView.class));
         tabs.add(createTab("Course Constructor", CourseConstructorView.class));
         if(user.isAdmin()){
-            System.out.println("Admin user");
             tabs.add(createAdminTab());
         }
 
@@ -107,7 +105,7 @@ public class MainView extends AppLayout {
         final Tab tab = new Tab();
         tab.add(new Button("Account Overview", event -> {
             UI.getCurrent().navigate(AccountOverviewView.class)
-                    .ifPresent(view -> view.setUserAndValidate(user));
+                    .ifPresent(view -> view.validateLogin(user));
         }));
         ComponentUtil.setData(tab, java.lang.Class.class, AccountOverviewView.class);
         return tab;

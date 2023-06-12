@@ -1,5 +1,6 @@
 package com.example.learn_with_us.views;
 
+import com.example.learn_with_us.beans.UserBean;
 import com.example.learn_with_us.data.entity.Course;
 import com.example.learn_with_us.data.entity.User;
 import com.example.learn_with_us.data.service.ContentService;
@@ -23,22 +24,25 @@ public class CourseListView extends VerticalLayout {
     private final ContentService service;
     Grid<Course> grid;
     TextField filterText = new TextField();
+    private UserBean userBean;
     private User user;
 
-    public CourseListView(@Autowired ContentService service) {
+    public CourseListView(@Autowired ContentService service, @Autowired UserBean userBean) {
+        this.userBean = userBean;
+        this.user = userBean.getUser();
         this.service = service;
         this.grid = new Grid<>(Course.class);
         addClassName("course-list-view");
         setSizeFull();
+        validateLogin();
     }
 
     /**
      * Only finish view configuration if valid user is passed along.
-     * @param user The currently logged in user.
      */
-    public void validateLogin(User user) {
-        this.user = user;
-        configureView();
+    private void validateLogin() {
+        if(user != null)
+            configureView();
     }
 
     /**
@@ -77,7 +81,6 @@ public class CourseListView extends VerticalLayout {
     }
 
     private void navigateToCourse(Course course) {
-        UI.getCurrent().navigate(CourseHomeView.class, course.getName())
-                .ifPresent(e -> validateLogin(user));
+        UI.getCurrent().navigate(CourseHomeView.class, course.getName());
     }
 }

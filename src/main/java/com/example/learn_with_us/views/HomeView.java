@@ -1,5 +1,6 @@
 package com.example.learn_with_us.views;
 
+import com.example.learn_with_us.beans.UserBean;
 import com.example.learn_with_us.data.entity.User;
 import com.example.learn_with_us.data.service.AccountService;
 import com.vaadin.flow.component.UI;
@@ -19,13 +20,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Route(value = "")
 @PageTitle("Home")
 public class HomeView extends VerticalLayout {
+    UserBean userBean;
     User user;
     AccountService accountService;
     Label errorMessage = new Label();
     Button actionButton;
 
-    public HomeView(@Autowired AccountService accountService) {
+    public HomeView(@Autowired AccountService accountService, @Autowired UserBean userBean) {
         this.accountService = accountService;
+        this.userBean = userBean;
+        this.user = userBean.getUser();
 
         setAlignItems(Alignment.CENTER);
 
@@ -51,14 +55,8 @@ public class HomeView extends VerticalLayout {
 
     private Button getNavButton() {
         Button button = new Button("Click to get started!");
-        button.addClickListener(e -> UI.getCurrent().navigate(CourseListView.class)
-                .ifPresent(page -> page.validateLogin(user)));
+        button.addClickListener(e -> UI.getCurrent().navigate(CourseListView.class));
         return button;
-    }
-
-    public void validateLogin(User user){
-        this.user = user;
-        configureButton();
     }
 
     private void loginDialog() {
@@ -78,8 +76,8 @@ public class HomeView extends VerticalLayout {
 
     private void validateLogin(String username, String password) {
         if((user = accountService.validateUser(username, password)) != null){
-            UI.getCurrent().navigate(CourseListView.class)
-                    .ifPresent(view -> view.validateLogin(user));
+            userBean.setUser(user);
+            UI.getCurrent().navigate(CourseListView.class);
         }
         else{
             errorMessage.setText("Invalid login attempt. Please try again.");

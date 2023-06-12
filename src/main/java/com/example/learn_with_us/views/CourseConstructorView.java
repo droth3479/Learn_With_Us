@@ -1,7 +1,9 @@
 package com.example.learn_with_us.views;
 
+import com.example.learn_with_us.beans.UserBean;
 import com.example.learn_with_us.data.entity.Course;
 import com.example.learn_with_us.data.entity.Subject;
+import com.example.learn_with_us.data.entity.User;
 import com.example.learn_with_us.data.form.CourseForm;
 import com.example.learn_with_us.data.service.ContentService;
 import com.vaadin.flow.component.UI;
@@ -26,8 +28,10 @@ public class CourseConstructorView extends VerticalLayout {
     CourseForm form;
     Button addSubject;
     ContentService service;
+    User user;
 
-    CourseConstructorView(@Autowired ContentService service) {
+    CourseConstructorView(@Autowired ContentService service, @Autowired UserBean userBean) {
+        this.user = userBean.getUser();
         this.service = service;
 
         configureHeader();

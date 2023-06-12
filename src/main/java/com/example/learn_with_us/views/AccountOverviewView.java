@@ -55,8 +55,7 @@ public class AccountOverviewView extends VerticalLayout {
         dialog.add("You must be an admin to visit this page.");
 
         Button backHome = new Button("Back Home", e -> {
-            UI.getCurrent().navigate(HomeView.class)
-                    .ifPresent(page -> page.validateLogin(user));
+            UI.getCurrent().navigate(HomeView.class);
         });
         dialog.getFooter().add(backHome);
 

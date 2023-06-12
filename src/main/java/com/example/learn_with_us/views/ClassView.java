@@ -1,5 +1,6 @@
 package com.example.learn_with_us.views;
 
+import com.example.learn_with_us.beans.UserBean;
 import com.example.learn_with_us.data.entity.Class;
 import com.example.learn_with_us.data.entity.User;
 import com.example.learn_with_us.data.service.ContentService;
@@ -20,10 +21,14 @@ public class ClassView extends VerticalLayout implements BeforeEnterObserver, Ha
     private String courseName;
     private Class thisClass;
     private final ContentService service;
+    private UserBean userBean;
     private User user;
 
-    public ClassView(@Autowired ContentService service) {
+    public ClassView(@Autowired ContentService service, @Autowired UserBean userBean) {
+        this.userBean = userBean;
+        this.user = userBean.getUser();
         this.service = service;
+        thisClass = service.getClass(className, courseName);
         setSizeFull();
     }
 
@@ -32,16 +37,15 @@ public class ClassView extends VerticalLayout implements BeforeEnterObserver, Ha
         courseName = event.getRouteParameters().get("courseName").orElseThrow();
         className = event.getRouteParameters().get("className").orElseThrow();
         title = courseName + ": " + className;
+        validateLogin();
     }
 
     /**
-     * Only finish view configuration if valid user is passed along.
-     * @param user The currently logged in user.
+     * Only finish view configuration if valid user logged in.
      */
-    public void validateLogin(User user){
-        this.user = user;
-        thisClass = service.getClass(className, courseName);
-        configureContent();
+    private void validateLogin(){
+        if(user != null)
+            configureContent();
     }
 
     private void configureContent() {

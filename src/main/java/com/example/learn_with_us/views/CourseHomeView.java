@@ -1,5 +1,6 @@
 package com.example.learn_with_us.views;
 
+import com.example.learn_with_us.beans.UserBean;
 import com.example.learn_with_us.data.entity.Class;
 import com.example.learn_with_us.data.entity.Course;
 import com.example.learn_with_us.data.entity.User;
@@ -27,6 +28,7 @@ public class CourseHomeView extends VerticalLayout
     private Course course;
     private String title = "";
     private final ContentService service;
+    private UserBean userBean;
     private User user;
 
     private final Grid<com.example.learn_with_us.data.entity.Class> grid = new Grid<>(Class.class);
@@ -38,7 +40,9 @@ public class CourseHomeView extends VerticalLayout
      * As such, they are included in configureView.
      * @param service The facade for db access methods.
      */
-    public CourseHomeView(@Autowired ContentService service){
+    public CourseHomeView(@Autowired ContentService service, @Autowired UserBean userBean){
+        this.userBean = userBean;
+        this.user = userBean.getUser();
         this.service = service;
         setSizeFull();
     }
@@ -47,15 +51,16 @@ public class CourseHomeView extends VerticalLayout
     public void setParameter(BeforeEvent event, String parameter) {
         course = service.getCourse(parameter);
         title = parameter;
+        validateLogin();
     }
 
     /**
-     * Only finish view configuration if valid user is passed along.
-     * @param user The currently logged in user.
+     * Only finish view configuration if valid user is logged in.
      */
-    public void validateLogin(User user){
-        this.user = user;
-        configureView();
+    private void validateLogin(){
+        if(user != null){
+            configureView();
+        }
     }
 
     /**
@@ -132,8 +137,7 @@ public class CourseHomeView extends VerticalLayout
     private void navigateToClass(Class c) {
         RouteParam courseParam = new RouteParam("course", course.getName());
         RouteParam classParam = new RouteParam("class", c.getName());
-        UI.getCurrent().navigate(ClassView.class, new RouteParameters(courseParam, classParam))
-                .ifPresent(e -> e.validateLogin(user));
+        UI.getCurrent().navigate("/course/" + course.getName() + "/class/" + c.getName());
     }
 
     private void updateList() {
