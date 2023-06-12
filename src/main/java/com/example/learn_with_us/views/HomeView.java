@@ -76,7 +76,7 @@ public class HomeView extends VerticalLayout {
 
     private void validateLogin(String username, String password) {
         if((user = accountService.validateUser(username, password)) != null){
-            userBean.setUser(user);
+            userBean.login(user);
             UI.getCurrent().navigate(CourseListView.class);
         }
         else{

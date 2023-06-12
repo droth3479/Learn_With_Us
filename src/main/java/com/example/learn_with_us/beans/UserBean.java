@@ -14,11 +14,15 @@ import com.vaadin.flow.spring.annotation.VaadinSessionScope;
 public class UserBean {
     private User user;
 
-    public void setUser(User user) {
+    public void login(User user) {
         this.user = user;
     }
 
     public User getUser() {
         return user;
+    }
+
+    public void logout() {
+        user = null;
     }
 }

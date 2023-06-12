@@ -129,6 +129,9 @@ public class MainView extends AppLayout {
         viewTitle = new H1();
         layout.add(viewTitle);
 
+        //Logout button, to be displayed on top right
+        Button logoutButton = new Button("Log out " + user.getUsername(), e -> userBean.logout());
+
         return layout;
     }
 
