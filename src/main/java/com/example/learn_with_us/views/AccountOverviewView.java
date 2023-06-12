@@ -36,7 +36,7 @@ public class AccountOverviewView extends VerticalLayout {
         setSizeFull();
     }
 
-    public void setUserAndValidate(User user) {
+    public void validateLogin(User user) {
         this.user = user;
         if(user != null && user.isAdmin()){
             if(grid == null){
@@ -55,7 +55,8 @@ public class AccountOverviewView extends VerticalLayout {
         dialog.add("You must be an admin to visit this page.");
 
         Button backHome = new Button("Back Home", e -> {
-            UI.getCurrent().navigate(HomeView.class);
+            UI.getCurrent().navigate(HomeView.class)
+                    .ifPresent(page -> page.validateLogin(user));
         });
         dialog.getFooter().add(backHome);
 
@@ -79,8 +80,10 @@ public class AccountOverviewView extends VerticalLayout {
         grid.setSizeFull();
 
         grid.setColumns("username", "password");
-        grid.addColumn(User::getCreationString).setHeader("Creation Time");
-        grid.addColumn(User::getRole).setHeader("Account Status");
+        Grid.Column<User> usernameColumn = grid.addColumn(User::getUsername).setHeader("Username");
+        Grid.Column<User> passwordColumn = grid.addColumn(User::getPassword).setHeader("Password");
+        Grid.Column<User> timeColumn = grid.addColumn(User::getCreationString).setHeader("Creation Time");
+        Grid.Column<User> roleColumn = grid.addColumn(User::getRole).setHeader("Account Status");
         Grid.Column<User> editColumn = grid.addComponentColumn(user -> {
             Button editButton = new Button("Edit");
             editButton.addClickListener(e -> {
@@ -99,18 +102,18 @@ public class AccountOverviewView extends VerticalLayout {
         usernameField.setWidthFull();
         binder.forField(usernameField)
                 .bind(User::getUsername, User::setUsername);
-        grid.getColumns().get(0).setEditorComponent(usernameField);
+        usernameColumn.setEditorComponent(usernameField);
 
         TextField passwordField = new TextField();
         passwordField.setWidthFull();
         binder.forField(passwordField)
                 .bind(User::getPassword, User::setPassword);
-        grid.getColumns().get(1).setEditorComponent(passwordField);
+        passwordColumn.setEditorComponent(passwordField);
 
         RadioButtonGroup<Role> roleCheckbox = new RadioButtonGroup<>("Role", service.findAllRoles());
         binder.forField(roleCheckbox)
                 .bind(User::getRole, User::setRole);
-        grid.getColumns().get(3).setEditorComponent(roleCheckbox);
+        roleColumn.setEditorComponent(roleCheckbox);
 
         Button saveButton = new Button("Save", e -> {
             service.updateUser(editor.getItem());
