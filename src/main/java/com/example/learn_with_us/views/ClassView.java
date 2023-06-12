@@ -1,6 +1,7 @@
 package com.example.learn_with_us.views;
 
 import com.example.learn_with_us.data.entity.Class;
+import com.example.learn_with_us.data.entity.User;
 import com.example.learn_with_us.data.service.ContentService;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.html.H1;
@@ -13,12 +14,13 @@ import org.springframework.beans.factory.annotation.Autowired;
  * Displays the classes content, either a video or text lesson.
  */
 @Route(value = "course/:courseName/class/:className", layout = MainView.class)
-public class ClassView extends VerticalLayout implements BeforeEnterObserver, HasDynamicTitle, AfterNavigationObserver {
+public class ClassView extends VerticalLayout implements BeforeEnterObserver, HasDynamicTitle {
     private String className;
     private String title = "";
     private String courseName;
     private Class thisClass;
     private final ContentService service;
+    private User user;
 
     public ClassView(@Autowired ContentService service) {
         this.service = service;
@@ -32,8 +34,12 @@ public class ClassView extends VerticalLayout implements BeforeEnterObserver, Ha
         title = courseName + ": " + className;
     }
 
-    @Override
-    public void afterNavigation(AfterNavigationEvent event) {
+    /**
+     * Only finish view configuration if valid user is passed along.
+     * @param user The currently logged in user.
+     */
+    public void validateLogin(User user){
+        this.user = user;
         thisClass = service.getClass(className, courseName);
         configureContent();
     }

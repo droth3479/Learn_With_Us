@@ -34,8 +34,8 @@ public class CourseHomeView extends VerticalLayout
     private Button addClassButton;
 
     /**
-     * Some typical constructor functions can only be run after setParameter.
-     * As such, they are included in afterNavigation.
+     * Some typical constructor functions can only be run after setParameter and validateLogin.
+     * As such, they are included in configureView.
      * @param service The facade for db access methods.
      */
     public CourseHomeView(@Autowired ContentService service){
@@ -49,6 +49,10 @@ public class CourseHomeView extends VerticalLayout
         title = parameter;
     }
 
+    /**
+     * Only finish view configuration if valid user is passed along.
+     * @param user The currently logged in user.
+     */
     public void validateLogin(User user){
         this.user = user;
         configureView();
@@ -126,7 +130,10 @@ public class CourseHomeView extends VerticalLayout
     }
 
     private void navigateToClass(Class c) {
-        UI.getCurrent().navigate("/course/" + course.getName() + "/class/" + c.getName());
+        RouteParam courseParam = new RouteParam("course", course.getName());
+        RouteParam classParam = new RouteParam("class", c.getName());
+        UI.getCurrent().navigate(ClassView.class, new RouteParameters(courseParam, classParam))
+                .ifPresent(e -> e.validateLogin(user));
     }
 
     private void updateList() {
