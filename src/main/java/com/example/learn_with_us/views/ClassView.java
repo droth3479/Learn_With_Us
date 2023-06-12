@@ -28,7 +28,6 @@ public class ClassView extends VerticalLayout implements BeforeEnterObserver, Ha
         this.userBean = userBean;
         this.user = userBean.getUser();
         this.service = service;
-        thisClass = service.getClass(className, courseName);
         setSizeFull();
     }
 
@@ -37,6 +36,7 @@ public class ClassView extends VerticalLayout implements BeforeEnterObserver, Ha
         courseName = event.getRouteParameters().get("courseName").orElseThrow();
         className = event.getRouteParameters().get("className").orElseThrow();
         title = courseName + ": " + className;
+        thisClass = service.getClass(className, courseName);
         validateLogin();
     }
 
