@@ -2,6 +2,7 @@ package com.example.learn_with_us.data.form;
 
 import com.example.learn_with_us.data.entity.Course;
 import com.example.learn_with_us.data.entity.Subject;
+import com.example.learn_with_us.data.entity.User;
 import com.example.learn_with_us.data.service.ContentService;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentEvent;
@@ -30,6 +31,7 @@ public class CourseForm extends FormLayout {
     Button clear = new Button("Clear");
     
     Binder<Course> binder = new BeanValidationBinder<>(Course.class);
+    User user;
     
     public CourseForm(List<Subject> subjects) {
         binder.bindInstanceFields(this);
@@ -46,6 +48,10 @@ public class CourseForm extends FormLayout {
     
     public void setCourse(Course course){
         binder.setBean(course);
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public void configureSubjects(List<Subject> subjects) {
@@ -102,6 +108,7 @@ public class CourseForm extends FormLayout {
     }
 
     private void validateAndSave() {
+        binder.getBean().setUser(user);
         if(binder.isValid()) {
             fireEvent(new CourseForm.SaveEvent(this, binder.getBean()));
         }

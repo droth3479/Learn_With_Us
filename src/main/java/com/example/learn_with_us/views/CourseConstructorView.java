@@ -50,6 +50,7 @@ public class CourseConstructorView extends VerticalLayout {
     private void configureForm() {
         form = new CourseForm(service.findAllSubjects());
         form.setCourse(new Course());
+        form.setUser(user);
         form.setVisible(true);
         form.addSaveListener(this::saveCourse);
         form.addClearListener(e -> clearForm());
