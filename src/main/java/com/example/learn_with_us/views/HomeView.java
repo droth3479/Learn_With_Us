@@ -24,6 +24,7 @@ public class HomeView extends VerticalLayout {
     UserBean userBean;
     User user;
     AccountService accountService;
+    Dialog dialog = new Dialog();
     Label errorMessage = new Label();
     Button actionButton;
 
@@ -40,7 +41,6 @@ public class HomeView extends VerticalLayout {
     }
 
     private void configureButton() {
-        remove(actionButton);
         if(user != null)
             actionButton = getNavButton();
         else
@@ -61,7 +61,6 @@ public class HomeView extends VerticalLayout {
     }
 
     private void loginDialog() {
-        Dialog dialog = new Dialog();
         TextField username = new TextField("Username");
         TextField password = new TextField("Password");
 
@@ -79,6 +78,7 @@ public class HomeView extends VerticalLayout {
         if((user = accountService.validateUser(username, password)) != null){
             userBean.login(user);
             UI.getCurrent().navigate(CourseListView.class);
+            dialog.close();
         }
         else{
             errorMessage.setText("Invalid login attempt. Please try again.");

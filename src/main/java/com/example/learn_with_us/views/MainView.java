@@ -129,7 +129,7 @@ public class MainView extends AppLayout {
         layout.add(viewTitle);
 
         //Logout button, to be displayed on top right
-        Button logoutButton = new Button("Log out " + user.getUsername(), e -> {
+        Button logoutButton = new Button("Log out ", e -> {
             userBean.logout();
             UI.getCurrent().navigate(HomeView.class);
         });
