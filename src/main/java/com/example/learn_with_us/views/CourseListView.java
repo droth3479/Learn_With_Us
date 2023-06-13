@@ -5,6 +5,7 @@ import com.example.learn_with_us.data.entity.Course;
 import com.example.learn_with_us.data.entity.User;
 import com.example.learn_with_us.data.service.ContentService;
 import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -59,10 +60,28 @@ public class CourseListView extends VerticalLayout {
         grid.setSizeFull();
         grid.setColumns("name", "founder");
         grid.addColumn(course -> (course.getSubject().toString())).setHeader("Subject").setSortable(true);
+        adminConfiguration();
+
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
 
         grid.asSingleSelect().addValueChangeListener(event ->
                 navigateToCourse(event.getValue()));
+    }
+
+    /**
+     * Add delete button to each row if user logged in is an admin.
+     */
+    private void adminConfiguration() {
+        if(user.isAdmin()){
+            grid.addComponentColumn(course -> {
+                Button delete = new Button("Delete");
+                delete.addClickListener(e -> {
+                    service.deleteCourse(course);
+                    updateList();
+                });
+                return delete;
+            }).setWidth("150px");
+        }
     }
 
     private HorizontalLayout getSearchbar() {
