@@ -17,6 +17,7 @@ import java.util.List;
 public interface CourseRepository extends JpaRepository<Course, Long> {
     List<Course> findCourseByName(String name);
     List<Course> findCourseByUser(User user);
+    void deleteCourseById(Long id);
 
     @Query("select c from Course c " +
             "where lower(c.name) like lower(concat('%', :searchTerm, '%'))"

@@ -1,7 +1,6 @@
 package com.example.learn_with_us.data.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 /**
@@ -21,11 +20,15 @@ public class Class {
     @OneToOne(targetEntity = BaseContent.class)
     @JoinColumn(name = "content_id")
     @NotNull
-    private ClassContent content;
+    private BaseContent content;
     @ManyToOne
     @JoinColumn(name = "user_id")
     @NotNull
     private User user;
+
+    public int getId() {
+        return id;
+    }
 
     public String getName() {
         return name;
@@ -35,11 +38,11 @@ public class Class {
         this.name = name;
     }
 
-    public ClassContent getContent() {
+    public BaseContent getContent() {
         return content;
     }
 
-    public void setContent(ClassContent content) {
+    public void setContent(BaseContent content) {
         this.content = content;
     }
 

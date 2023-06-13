@@ -10,4 +10,5 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface ClassContentRepository extends JpaRepository<BaseContent, Long> {
+    void deleteById(Long Id);
 }

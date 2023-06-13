@@ -8,6 +8,7 @@ import com.example.learn_with_us.data.repository.CourseRepository;
 import com.example.learn_with_us.data.repository.SubjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -18,6 +19,7 @@ import java.util.List;
  * perform CRUD operations.
  */
 @Service
+@Transactional
 public class ContentService {
     @Autowired
     private CourseRepository courseRepo;
@@ -53,6 +55,20 @@ public class ContentService {
         return courseRepo.findCourseByUser(user);
     }
 
+    public void deleteCourse(Course course){
+        List<Class> allClasses = getClassesInCourse(course);
+        for(Class c : allClasses) {
+            deleteClass(c);
+        }
+        courseRepo.deleteCourseById(course.getId());
+    }
+
+    private void deleteClass(Class c) {
+        BaseContent content = c.getContent();
+        classRepo.deleteClassById(c.getId());
+        deleteClassContent(content);
+    }
+
     public void addClass(Class c) {
         classRepo.save(c);
     }
@@ -83,6 +99,10 @@ public class ContentService {
 
     public void addClassContent(BaseContent bc){
         classContentRepo.save(bc);
+    }
+
+    public void deleteClassContent(BaseContent bc){
+        classContentRepo.deleteById(bc.getId());
     }
 
     public void addSubject(Subject s){

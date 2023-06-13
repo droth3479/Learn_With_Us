@@ -27,6 +27,10 @@ public class Course {
     @NotNull
     private User user;
 
+    public Long getId() {
+        return id;
+    }
+
     public String getName() {
         return name;
     }
@@ -69,6 +73,4 @@ public class Course {
                 ", user='" + user + '\'' +
                 '}';
     }
-
-
 }

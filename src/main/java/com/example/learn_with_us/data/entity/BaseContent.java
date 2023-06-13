@@ -28,4 +28,8 @@ public abstract class BaseContent implements ClassContent {
     public String getSource() {
         return source;
     }
+
+    public Long getId() {
+        return id;
+    }
 }
