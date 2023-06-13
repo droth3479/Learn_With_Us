@@ -97,7 +97,10 @@ public class CourseConstructorView extends VerticalLayout {
             saveSubject(subject.getValue());
             dialog.close();
         });
-        Button cancelButton = new Button("Cancel", e -> dialog.close());
+        Button cancelButton = new Button("Cancel", e -> {
+            dialog.close();
+            form.configureSubjects(service.findAllSubjects());
+        });
         dialog.getFooter().add(cancelButton);
         dialog.getFooter().add(saveButton);
 
