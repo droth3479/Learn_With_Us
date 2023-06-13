@@ -63,7 +63,7 @@ public class ContentService {
         courseRepo.deleteCourseById(course.getId());
     }
 
-    private void deleteClass(Class c) {
+    public void deleteClass(Class c) {
         BaseContent content = c.getContent();
         classRepo.deleteClassById(c.getId());
         deleteClassContent(content);
