@@ -2,6 +2,7 @@ package com.example.learn_with_us.data.repository;
 
 import com.example.learn_with_us.data.entity.Class;
 import com.example.learn_with_us.data.entity.Course;
+import com.example.learn_with_us.data.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -15,4 +16,5 @@ import java.util.List;
 public interface ClassRepository extends JpaRepository<Class, Long> {
     List<Class> findByNameAndCourse(String className, Course course);
     List<Class> findByCourse(Course course);
+    List<Class> findByUser(User user);
 }

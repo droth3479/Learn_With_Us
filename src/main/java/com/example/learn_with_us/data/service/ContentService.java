@@ -1,9 +1,7 @@
 package com.example.learn_with_us.data.service;
 
-import com.example.learn_with_us.data.entity.BaseContent;
+import com.example.learn_with_us.data.entity.*;
 import com.example.learn_with_us.data.entity.Class;
-import com.example.learn_with_us.data.entity.Course;
-import com.example.learn_with_us.data.entity.Subject;
 import com.example.learn_with_us.data.repository.ClassContentRepository;
 import com.example.learn_with_us.data.repository.ClassRepository;
 import com.example.learn_with_us.data.repository.CourseRepository;
@@ -51,6 +49,10 @@ public class ContentService {
         return courseRepo.findCourseByName(name).get(0);
     }
 
+    public List<Course> findAllCourseByUserId(User user) {
+        return courseRepo.findCourseByUser(user);
+    }
+
     public void addClass(Class c) {
         classRepo.save(c);
     }
@@ -73,6 +75,10 @@ public class ContentService {
      */
     public List<Class> getClassesInCourse(Course course) {
         return classRepo.findByCourse(course);
+    }
+
+    public List<Class> findAllClassesByUser(User user){
+        return classRepo.findByUser(user);
     }
 
     public void addClassContent(BaseContent bc){

@@ -1,6 +1,7 @@
 package com.example.learn_with_us.data.repository;
 
 import com.example.learn_with_us.data.entity.Course;
+import com.example.learn_with_us.data.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -15,6 +16,7 @@ import java.util.List;
 @Repository
 public interface CourseRepository extends JpaRepository<Course, Long> {
     List<Course> findCourseByName(String name);
+    List<Course> findCourseByUser(User user);
 
     @Query("select c from Course c " +
             "where lower(c.name) like lower(concat('%', :searchTerm, '%'))"
