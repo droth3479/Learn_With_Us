@@ -17,29 +17,4 @@ public class LearnWithUsApplication {
     public static void main(String[] args) {
         SpringApplication.run(LearnWithUsApplication.class, args);
     }
-
-// For testing purposes only
-
-//    @PostConstruct
-//    public void init() {
-//        Subject science = new Subject("Science");
-//        service.addSubject(science);
-//
-//        Course scienceCourse = new Course();
-//        scienceCourse.setName("Physics");
-//        scienceCourse.setFounder("Joe Shmoe");
-//        scienceCourse.setSubject(science);
-//
-//        BaseContent scienceVideo = new VideoContent();
-//        scienceVideo.setSource("learnwithus/content/video/cokeandmentos");
-//
-//        Class scienceClass = new Class();
-//        scienceClass.setName("Chemical Reactions");
-//        scienceClass.setCourse(scienceCourse);
-//        scienceClass.setContent(scienceVideo);
-//
-//        service.addCourse(scienceCourse);
-//        service.addClassContent(scienceVideo);
-//        service.addClass(scienceClass);
-//    }
 }
