@@ -80,10 +80,27 @@ public class CourseHomeView extends VerticalLayout
         grid.addClassNames("class-grid");
         grid.setSizeFull();
         grid.setColumns("name");
+        adminConfiguration();
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
 
         grid.asSingleSelect().addValueChangeListener(event ->
                 navigateToClass(event.getValue()));
+    }
+
+    /**
+     * Add delete button to each row if user logged in is an admin.
+     */
+    private void adminConfiguration() {
+        if(user.isAdmin()){
+            grid.addComponentColumn(c -> {
+                Button delete = new Button("Delete");
+                delete.addClickListener(e -> {
+                    service.deleteClass(c);
+                    updateList();
+                });
+                return delete;
+            }).setWidth("150px");
+        }
     }
 
     private void configureForm() {
