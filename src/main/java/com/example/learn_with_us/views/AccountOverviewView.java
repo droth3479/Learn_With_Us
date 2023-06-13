@@ -1,8 +1,11 @@
 package com.example.learn_with_us.views;
 
+import com.example.learn_with_us.data.entity.Class;
+import com.example.learn_with_us.data.entity.Course;
 import com.example.learn_with_us.data.entity.Role;
 import com.example.learn_with_us.data.entity.User;
 import com.example.learn_with_us.data.service.AccountService;
+import com.example.learn_with_us.data.service.ContentService;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -13,6 +16,7 @@ import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.radiobutton.RadioButtonGroup;
+import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.router.PageTitle;
@@ -28,11 +32,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class AccountOverviewView extends VerticalLayout {
     private User user;
     private final AccountService service;
+    private final ContentService contentService;
     private Grid<User> grid;
     private Editor<User> editor;
 
-    public AccountOverviewView(@Autowired AccountService service) {
+    public AccountOverviewView(@Autowired AccountService service, @Autowired ContentService contentService) {
         this.service = service;
+        this.contentService = contentService;
         setSizeFull();
     }
 
@@ -78,11 +84,22 @@ public class AccountOverviewView extends VerticalLayout {
 
         grid.setSizeFull();
 
-        grid.setColumns("username", "password");
         Grid.Column<User> usernameColumn = grid.addColumn(User::getUsername).setHeader("Username");
         Grid.Column<User> passwordColumn = grid.addColumn(User::getPassword).setHeader("Password");
         Grid.Column<User> timeColumn = grid.addColumn(User::getCreationString).setHeader("Creation Time");
         Grid.Column<User> roleColumn = grid.addColumn(User::getRole).setHeader("Account Status");
+        Grid.Column<User> coursesCreatedColumn = grid.addComponentColumn(user -> {
+            Select<Course> coursesCreated = new Select<>();
+            coursesCreated.setItems(contentService.findAllCourseByUserId(user));
+            coursesCreated.setItemLabelGenerator(Course::getName);
+            return coursesCreated;
+        }).setWidth("200px").setHeader("Courses Created");
+        Grid.Column<User> classesCreatedColumn = grid.addComponentColumn(user -> {
+            Select<Class> classesCreated = new Select<>();
+            classesCreated.setItems(contentService.findAllClassesByUser(user));
+            classesCreated.setItemLabelGenerator(Class::getFullName);
+            return classesCreated;
+        }).setWidth("200px").setHeader("Classes Created");
         Grid.Column<User> editColumn = grid.addComponentColumn(user -> {
             Button editButton = new Button("Edit");
             editButton.addClickListener(e -> {
@@ -116,8 +133,7 @@ public class AccountOverviewView extends VerticalLayout {
 
         Button saveButton = new Button("Save", e -> {
             service.updateUser(editor.getItem());
-            System.out.println(editor.save());
-
+            editor.save();
         });
         Button cancelButton = new Button(VaadinIcon.CLOSE.create(),
                 e -> editor.cancel());
