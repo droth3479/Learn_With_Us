@@ -59,6 +59,10 @@ public class Class {
         this.user = user;
     }
 
+    public String getFullName() {
+        return course.getName() + " : " + name;
+    }
+
     @Override
     public String toString() {
         return "Class{" +
